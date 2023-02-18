@@ -6,7 +6,6 @@ import { wait } from "@testing-library/user-event/dist/utils";
 import Subtitle from "./assets/subtitle.json";
 
 function Index(props) {
-  //검색창 온오프
 
   //검색창 처리
   const [search, setSearch] = useState("");
