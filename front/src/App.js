@@ -2,13 +2,10 @@ import logo from "./logo.svg";
 import "./App.css";
 import ReactPlayer from "react-player";
 import { useState, useRef, useCallback, useEffect } from "react";
-import { wait } from "@testing-library/user-event/dist/utils";
-import Subtitle from "./assets/subtitle.json";
 import HeaderImg from "./assets/Group 25.png";
 import TutorImg from "./assets/TutorImg.png";
-import SearchIcon from "./assets/SearchIcon.png";
-import BookmarkIcon from "./assets/BookmarkIcon.png";
 import styled from "styled-components";
+import Index from "./components/rightside.js";
 
 const Container = styled.div`
   display: flex;
@@ -24,39 +21,24 @@ const LS = styled.div`
     line-height: 30px;
     font-weight: 700;
   }
+  p {
+    font-family: "Inter";
+    color: rgb(0, 0, 0);
+    background-color: rgb(255, 255, 255);
+    font-weight: 500;
+    font-style: normal;
+    font-variant: normal;
+    text-decoration: none;
+    vertical-align: baseline;
+    white-space: pre-wrap;
+    line-height: 25px;
+  }
 `;
 const RS = styled.div`
-  margin: 4%;
-
+  margin-top: 4%;
+  margin-left: 2%;
   margin-right: 15%;
   width: 50%;
-`;
-const Search = styled.div`
-  display: flex;
-  input {
-    width: 100%;
-    height: 39px;
-    background: #f4f4f4;
-    border: 1px solid #c9c9c9;
-    border-radius: 6px;
-    font-family: "Inter";
-    font-style: normal;
-    font-weight: 500;
-    font-size: 16px;
-    line-height: 28px;
-    /* identical to box height, or 175% */
-
-    letter-spacing: -0.3px;
-    padding-left: 25px;
-    color: #818892;
-  }
-  img {
-    z-index: 10;
-    width: 20px;
-    height: 20px;
-    margin-left: -42px;
-    margin-top: 10px;
-  }
 `;
 
 const Profile = styled.div`
@@ -80,151 +62,6 @@ const Profile = styled.div`
     line-height: 21px;
   }
 `;
-
-const Answers = styled.div`
-  padding: 3px;
-  margin-left: -3px;
-  height: 230px;
-  width: 106%;
-  margin-top: 13px;
-  overflow-y: auto;
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none;
-  ::-webkit-scrollbar {
-    display: none;
-  }
-  button {
-    margin-top: 15px;
-    border: none;
-    background: #f4f1f1;
-    width: 100%;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    border-radius: 8px;
-    div {
-      diaplay: flex;
-      justify-content: space-between;
-      flex-direction: row;
-      img {
-        margin: 10px;
-        float: right;
-        width: 14px;
-        height: 18px;
-      }
-      h5 {
-        margin-top: 8px;
-        margin-left: -10px;
-        width: 100px;
-        font-family: "Inter";
-        font-style: normal;
-        font-weight: 500;
-        font-size: 14px;
-        line-height: 28px;
-        /* identical to box height, or 200% */
-
-        letter-spacing: -0.3px;
-
-        color: #6e3ed3;
-      }
-    }
-  }
-`;
-function Index(props) {
-  //검색창 처리
-  const [search, setSearch] = useState("");
-
-  useEffect(() => {
-    console.log(search);
-    searchSub(search);
-  }, [search]);
-  const onSearch = (e) => {
-    setSearch(e.target.value);
-  };
-
-  //자막에서 검색어 찾기
-  const [answers, setAnswers] = useState();
-  const searchSub = (value) => {
-    var corrects = [];
-    for (var i = 0; i < Subtitle.subtitles.length; i++) {
-      if (Subtitle.subtitles[i].subtitle.indexOf(search) !== -1) {
-        corrects.push(Subtitle.subtitles[i]);
-      }
-    }
-    setTimeout(function () {
-      setAnswers(corrects);
-      // console.log(corrects);
-    }, 5);
-  };
-  //시간->초
-  const time2sec = (e) => {
-    console.log(e);
-    var hour = e.substring(0, 2);
-    var minute = e.substring(3, 5);
-    var second = Number(e.substring(6, 8));
-    second += minute * 60;
-    second += hour * 60 * 60;
-    console.log(hour);
-    console.log(minute);
-    console.log(second);
-    return second;
-  };
-  //검색어 배열 출력
-  const Answer = (e) => {
-    if (e.input === undefined) {
-      return <p>Search</p>;
-    }
-    // console.log(e.input);
-    return e.input.map((i) => (
-      <>
-        <button
-          onClick={(e) => {
-            props.onTime(time2sec(i.start.substring(0, 8)), e);
-          }}
-        >
-          <div>
-            <img src={BookmarkIcon} />
-            <h5>{i.start.substring(0, 8)}</h5>
-          </div>
-          <p>{i.subtitle}</p>
-          {/* 특정문자열만 색 바꾸는 코드: 줄이 바뀌어버림 */}
-          {/* <p>{i.subtitle.substring(0, i.subtitle.indexOf(search))}</p>
-          <p>{search}</p>
-          <p>
-            {i.subtitle.substring(i.subtitle.indexOf(search) + search.length)}
-          </p> */}
-        </button>
-      </>
-    ));
-  };
-
-  return (
-    <>
-      {/* 검색창 구역 */}
-      <div>
-        {/* 검색창 */}
-        <Search>
-          <input onChange={onSearch} value={search} placeholder="Search" />
-          <img src={SearchIcon} />
-        </Search>
-        <Answers class="answers">
-          <Answer input={answers} />
-        </Answers>
-      </div>
-      {/* 클립 구역 */}
-      <div>
-        <h2>클립 목록</h2>
-        <div>
-          <p>
-            Prince Harry's <br />
-            autobiography 'Spare'
-            <br />
-            (Sneak Peak)
-          </p>
-          <label>14:19</label>
-        </div>
-      </div>
-    </>
-  );
-}
 
 export default function App() {
   //동영상 재생에 필요
@@ -270,6 +107,35 @@ export default function App() {
     }, 1);
   };
 
+  //택 1 탭
+  const [tab, setTab] = useState(0);
+
+  const Tabs = styled.div`
+    display: flex;
+  `;
+
+  const Tab = styled.button`
+    font-family: "Inter";
+    height: 47px;
+    width: 150px;
+    border: none;
+    border-bottom-style: solid;
+    border-bottom-width: 2px;
+
+    text-align: center;
+    text-transform: uppercase;
+    font-size: 15px;
+    font-weight: 400;
+    margin-bottom: 20px;
+    margin-top: 10px;
+    padding: auto;
+    background-color: ${(props) => (props.isActive ? "#EDF0F5" : "#FFFFFF")};
+    color: ${(props) => (props.isActive ? "#7462E0" : "#8E8E8E")};
+  `;
+
+  function tabChange(num, e) {
+    setTab(num);
+  }
   return (
     <>
       {/* 헤더 */}
@@ -313,7 +179,14 @@ export default function App() {
               <p>University of Cambridge</p>
             </div>
           </Profile>
-          <h3>개요</h3>
+          <Tabs>
+            <Tab onClick={(e) => tabChange(0, e)} isActive={tab === 0}>
+              개요
+            </Tab>
+            <Tab onClick={(e) => tabChange(1, e)} isActive={tab === 1}>
+              MY PLAYLIST
+            </Tab>
+          </Tabs>
           <p>
             2/8 (수)에 진행된 ‘영자 신문 읽기반’ 첫 수업의 맛보기 영상을
             시청해보세요!
@@ -322,7 +195,9 @@ export default function App() {
             3월에는 영어 원서 읽기, 4월에는 영자 신문 읽기로 돌아올 예정이오니
             많은 관심 부탁드립니다.
             <br />
+            <br />
             📰 Read with Me: Articles
+            <br />
             <br />
             2023년 2월, 지금 가장 핫한 영국/미국 기사 함께 읽어요.
             <br />
@@ -335,6 +210,7 @@ export default function App() {
             <br />
             *총 4주간 이어지는 하나의 프로그램입니다. 개별 LIVE 세션 구매는
             불가하오니 참고 부탁드립니다. <br />
+            <br />
             링글 Pick! 2월 읽어볼 주제와 튜터 라인업
             <br />
           </p>
