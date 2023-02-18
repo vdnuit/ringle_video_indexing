@@ -1,5 +1,6 @@
 import { useState, useRef, useCallback, useEffect } from "react";
 import Subtitle from "../assets/subtitle.json";
+import Text from "../assets/text.json";
 import SummarizeIndex from "../assets/summarizeIndex.json";
 import SearchIcon from "../assets/SearchIcon.png";
 import BookmarkIcon from "../assets/BookmarkIcon.png";
@@ -9,6 +10,8 @@ import HeartIcon from "../assets/HeartIcon.png";
 import FilledHeartIcon from "../assets/FilledHeartIcon.png";
 import FilledPlayIcon from "../assets/FilledPlayIcon.png";
 import XIcon from "../assets/XIcon.png";
+import axios from "axios";
+
 const Search = styled.div`
   display: flex;
   input {
@@ -349,6 +352,7 @@ const Summarizes = styled.div`
     float: right;
   }
 `;
+
 export default function Index(props) {
   //검색창 온오프
   const [on, setOn] = useState(false);
@@ -357,7 +361,6 @@ export default function Index(props) {
   const [search, setSearch] = useState("");
 
   useEffect(() => {
-    console.log(search);
     searchSub(search);
   }, [search]);
   const onSearch = (e) => {
@@ -420,6 +423,36 @@ export default function Index(props) {
     ));
   };
   const Summarize = () => {
+    const [prompt, setPrompt] = useState("");
+    const [response, setResponse] = useState("");
+
+    var list = [];
+    useEffect(() => {
+      for (var i = 0; i < 1; i++) {
+        setPrompt(
+          `Can you summarize "${Text.subtitles[i].subtitle}" in a phrase?`
+        );
+        console.log(
+          `Can you summarize "${Text.subtitles[i].subtitle}" in 10 words?`
+        );
+        list.push(response);
+        handleSubmit();
+      }
+      console.log(list);
+    }, []);
+    console.log(response);
+    const handleSubmit = () => {
+      // Send a request to the server with the prompt
+      axios
+        .post("http://localhost:8080/chat", { prompt })
+        .then((res) => {
+          // Update the response state with the server's response
+          setResponse(res.data);
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    };
     return SummarizeIndex.indexes.map((i) => (
       <>
         <Line />
@@ -439,6 +472,8 @@ export default function Index(props) {
             <p>{i.subtitle}</p>
           </span>
         </button>
+
+        <p>{response}</p>
       </>
     ));
   };

@@ -7,7 +7,6 @@ import TutorImg from "./assets/TutorImg.png";
 import PlaylistImg from "./assets/PlaylistImg.png";
 import styled from "styled-components";
 import Index from "./components/rightside.js";
-
 const Container = styled.div`
   display: flex;
 `;
@@ -141,6 +140,7 @@ export default function App() {
   function tabChange(num, e) {
     setTab(num);
   }
+
   return (
     <>
       {/* 헤더 */}
