@@ -1,0 +1,94 @@
+{
+  "indexes": [
+    {
+      "number": 1,
+      "start": "00:00:09",
+      "end": "00:00:37",
+      "index": "Moorea: Academic Editor, Tutor, and Comedian."
+    },
+    {
+      "number": 2,
+      "start": "00:00:37",
+      "end": "00:00:52",
+      "index": "Today's Topic"
+    },
+    {
+      "number": 3,
+      "start": "00:00:52",
+      "end": "00:01:21",
+      "index": "Introduce Context"
+    },
+    {
+      "number": 4,
+      "start": "00:01:21",
+      "end": "00:01:58",
+      "index": "Couple's blind date leads to departure from royal duties."
+    },
+    {
+      "number": 5,
+      "start": "00:01:58",
+      "end": "00:02:35",
+      "index": "Prince Harry Timeline (2)"
+    },
+    {
+      "number": 6,
+      "start": "00:02:35",
+      "end": "00:02:49",
+      "index": "Prince Harry Timeline (3)"
+    },
+    {
+      "number": 7,
+      "start": "00:02:49",
+      "end": "00:03:32",
+      "index": "Prince Harry as a 'spare'"
+    },
+    {
+      "number": 8,
+      "start": "00:03:32",
+      "end": "00:05:37",
+      "index": "Outdated concept of 'spare' in modern society"
+    },
+    {
+      "number": 9,
+      "start": "00:05:37",
+      "end": "00:06:00",
+      "index": "Readthrough & Digest"
+    },
+    {
+      "number": 10,
+      "start": "00:06:00",
+      "end": "00:06:35",
+      "index": "Beware the spare"
+    },
+    {
+      "number": 11,
+      "start": "00:06:35",
+      "end": "00:07:28",
+      "index": "The heir and the spare"
+    },
+    {
+      "number": 12,
+      "start": "00:07:28",
+      "end": "00:08:15",
+      "index": "Read <The heir and the spare> #1"
+    },
+    {
+      "number": 13,
+      "start": "00:08:15",
+      "end": "00:08:51",
+      "index": "Read <The heir and the spare> #2"
+    },
+    {
+      "number": 14,
+      "start": "00:08:51",
+      "end": "00:11:09",
+      "index": "Words <The heir and the spare> #1"
+    },
+    {
+      "number": 15,
+      "start": "00:11:09",
+      "end": "00:14:12",
+      "index": "Words <The heir and the spare> #2"
+    }
+  ]
+}
