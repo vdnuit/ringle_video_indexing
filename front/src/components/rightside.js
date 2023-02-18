@@ -1,9 +1,11 @@
 import { useState, useRef, useCallback, useEffect } from "react";
 import Subtitle from "../assets/subtitle.json";
+import SummarizeIndex from "../assets/summarizeIndex.json";
 import SearchIcon from "../assets/SearchIcon.png";
 import BookmarkIcon from "../assets/BookmarkIcon.png";
 import styled from "styled-components";
 import PlayIcon from "../assets/PlayIcon.png";
+import XIcon from "../assets/XIcon.png";
 const Search = styled.div`
   display: flex;
   input {
@@ -16,19 +18,20 @@ const Search = styled.div`
     font-style: normal;
     font-weight: 500;
     font-size: 16px;
-    line-height: 28px;
+    line-height: 34px;
     /* identical to box height, or 175% */
 
     letter-spacing: -0.3px;
     padding-left: 25px;
     color: #818892;
+    padding-top: 3px;
   }
   img {
     z-index: 10;
     width: 20px;
     height: 20px;
     margin-left: -42px;
-    margin-top: 10px;
+    margin-top: 12px;
   }
 `;
 
@@ -175,7 +178,11 @@ const ClipList = styled.div`
     }
   }
 `;
+const Summarizes = styled.div``;
 export default function Index(props) {
+  //검색창 온오프
+  const [on, setOn] = useState(false);
+
   //검색창 처리
   const [search, setSearch] = useState("");
 
@@ -242,7 +249,29 @@ export default function Index(props) {
       </>
     ));
   };
-
+  const Summarize = () => {
+    return Summarize.indexes.map((i) => (
+      <>
+        <button
+          onClick={(e) => {
+            props.onTime(time2sec(i.start.substring), e);
+          }}
+        >
+          <div>
+            <img src={BookmarkIcon} />
+            <h5>{i.start.substring}</h5>
+          </div>
+          <p>{i.index}</p>
+          {/* 특정문자열만 색 바꾸는 코드: 줄이 바뀌어버림 */}
+          {/* <p>{i.subtitle.substring(0, i.subtitle.indexOf(search))}</p>
+            <p>{search}</p>
+            <p>
+              {i.subtitle.substring(i.subtitle.indexOf(search) + search.length)}
+            </p> */}
+        </button>
+      </>
+    ));
+  };
   return (
     <>
       {/* 검색창 구역 */}
@@ -250,11 +279,31 @@ export default function Index(props) {
         {/* 검색창 */}
         <Search>
           <input onChange={onSearch} value={search} placeholder="Search" />
-          <img src={SearchIcon} />
+          {on ? (
+            <img
+              onClick={() => {
+                setOn(false);
+              }}
+              src={XIcon}
+            />
+          ) : (
+            <img
+              onClick={() => {
+                setOn(true);
+              }}
+              src={SearchIcon}
+            />
+          )}
         </Search>
-        <Answers class="answers">
-          <Answer input={answers} />
-        </Answers>
+        {on ? (
+          <Answers class="answers">
+            <Answer input={answers} />
+          </Answers>
+        ) : (
+          <Summarizes>
+            <Summarize />
+          </Summarizes>
+        )}
       </div>
       {/* 클립 구역 */}
       <ClipList>

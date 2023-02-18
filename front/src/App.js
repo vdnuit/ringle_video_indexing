@@ -115,6 +115,10 @@ export default function App() {
   `;
 
   const Tab = styled.button`
+    &:hover {
+      background-color: #f9fbfd;
+      color: #7462e0;
+    }
     font-family: "Inter";
     height: 47px;
     width: 150px;
