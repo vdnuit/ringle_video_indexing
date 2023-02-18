@@ -4,6 +4,7 @@ import ReactPlayer from "react-player";
 import { useState, useRef, useCallback, useEffect } from "react";
 import HeaderImg from "./assets/Group 25.png";
 import TutorImg from "./assets/TutorImg.png";
+import PlaylistImg from "./assets/PlaylistImg.png";
 import styled from "styled-components";
 import Index from "./components/rightside.js";
 
@@ -12,7 +13,7 @@ const Container = styled.div`
 `;
 const LS = styled.div`
   width: 60%;
-  margin-top: 4%;
+  margin-top: 3%;
   margin-left: 15%;
   h1 {
     margin-top: 30px;
@@ -25,7 +26,7 @@ const LS = styled.div`
     font-family: "Inter";
     color: rgb(0, 0, 0);
     background-color: rgb(255, 255, 255);
-    font-weight: 500;
+    font-weight: 300;
     font-style: normal;
     font-variant: normal;
     text-decoration: none;
@@ -35,7 +36,7 @@ const LS = styled.div`
   }
 `;
 const RS = styled.div`
-  margin-top: 4%;
+  margin-top: 3%;
   margin-left: 2%;
   margin-right: 15%;
   width: 50%;
@@ -191,33 +192,43 @@ export default function App() {
               MY PLAYLIST
             </Tab>
           </Tabs>
-          <p>
-            2/8 (수)에 진행된 ‘영자 신문 읽기반’ 첫 수업의 맛보기 영상을
-            시청해보세요!
-            <br />
-            “2월 영자 신문 읽기반” 모집은 마감되었습니다. <br />
-            3월에는 영어 원서 읽기, 4월에는 영자 신문 읽기로 돌아올 예정이오니
-            많은 관심 부탁드립니다.
-            <br />
-            <br />
-            📰 Read with Me: Articles
-            <br />
-            <br />
-            2023년 2월, 지금 가장 핫한 영국/미국 기사 함께 읽어요.
-            <br />
-            2월 Read with Me에서는 총 4주 간 미국과 영국의 주요 트렌드를 알 수
-            있는 최신 기사 4편을 원어민 튜터와 읽고 주제와 관련된 고급 영어
-            표현과 배경지식을 같이 소화해봅니다.
-            <br />
-            *각 LIVE 강의에서 다룰 기사와 학습 자료는 프로그램 신청자 분들에
-            한해서 제공드리며, 강의 입장 링크 또한 각 세션 전 별도로 전달됩니다.
-            <br />
-            *총 4주간 이어지는 하나의 프로그램입니다. 개별 LIVE 세션 구매는
-            불가하오니 참고 부탁드립니다. <br />
-            <br />
-            링글 Pick! 2월 읽어볼 주제와 튜터 라인업
-            <br />
-          </p>
+          {tab === 0 ? (
+            <p>
+              2/8 (수)에 진행된 ‘영자 신문 읽기반’ 첫 수업의 맛보기 영상을
+              시청해보세요!
+              <br />
+              “2월 영자 신문 읽기반” 모집은 마감되었습니다. <br />
+              3월에는 영어 원서 읽기, 4월에는 영자 신문 읽기로 돌아올 예정이오니
+              많은 관심 부탁드립니다.
+              <br />
+              <br />
+              📰 Read with Me: Articles
+              <br />
+              <br />
+              2023년 2월, 지금 가장 핫한 영국/미국 기사 함께 읽어요.
+              <br />
+              2월 Read with Me에서는 총 4주 간 미국과 영국의 주요 트렌드를 알 수
+              있는 최신 기사 4편을 원어민 튜터와 읽고 주제와 관련된 고급 영어
+              표현과 배경지식을 같이 소화해봅니다.
+              <br />
+              *각 LIVE 강의에서 다룰 기사와 학습 자료는 프로그램 신청자 분들에
+              한해서 제공드리며, 강의 입장 링크 또한 각 세션 전 별도로
+              전달됩니다.
+              <br />
+              *총 4주간 이어지는 하나의 프로그램입니다. 개별 LIVE 세션 구매는
+              불가하오니 참고 부탁드립니다. <br />
+              <br />
+              링글 Pick! 2월 읽어볼 주제와 튜터 라인업
+              <br />
+              <br />
+              <br />
+            </p>
+          ) : (
+            <img
+              src={PlaylistImg}
+              style={{ width: "100%", marginBottom: "40px" }}
+            />
+          )}
         </LS>
 
         {/* 우측 리스트 */}

@@ -5,6 +5,9 @@ import SearchIcon from "../assets/SearchIcon.png";
 import BookmarkIcon from "../assets/BookmarkIcon.png";
 import styled from "styled-components";
 import PlayIcon from "../assets/PlayIcon.png";
+import HeartIcon from "../assets/HeartIcon.png";
+import FilledHeartIcon from "../assets/FilledHeartIcon.png";
+import FilledPlayIcon from "../assets/FilledPlayIcon.png";
 import XIcon from "../assets/XIcon.png";
 const Search = styled.div`
   display: flex;
@@ -37,9 +40,9 @@ const Search = styled.div`
 
 const Answers = styled.div`
   padding: 3px;
-  height: 230px;
+  height: 236px;
   width: 105%;
-  margin-top: 13px;
+  margin-top: 7px;
   overflow-y: auto;
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none;
@@ -178,7 +181,174 @@ const ClipList = styled.div`
     }
   }
 `;
-const Summarizes = styled.div``;
+const Most = styled.div`
+  span {
+    margin-bottom: 20px;
+
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-between;
+    width: 106%;
+    div {
+      margin-top: 30px;
+      width: 90%;
+      height: 40px;
+      background: rgba(181, 168, 238, 0.8);
+      box-shadow: inset 0px 2px 4px rgba(0, 0, 0, 0.25);
+      border-radius: 11px;
+    }
+    img {
+      margin-top: 40px;
+      margin-right: 9px;
+      width: 20px;
+      height: 20px;
+    }
+  }
+  h2 {
+    margin-left: 25px;
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+    font-family: "Inter";
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 42px;
+    /* identical to box height, or 175% */
+
+    letter-spacing: -0.3px;
+
+    color: #ffffff;
+  }
+  button {
+    &:hover {
+      background-color: #eef0f4;
+    }
+    padding: 15px;
+    width: 106%;
+    background-color: #ffffff;
+    border: none;
+  }
+  div {
+    p {
+      font-family: "Inter";
+      font-style: normal;
+      font-weight: 500;
+      font-size: 20px;
+      line-height: 23px;
+      /* identical to box height, or 250% */
+      text-align: left;
+      color: #9183af;
+      margin-bottom: 13px;
+    }
+  }
+
+  h5 {
+    float: right;
+    font-family: "Inter";
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 28px;
+    /* identical to box height, or 200% */
+
+    letter-spacing: -0.3px;
+
+    color: #5c0fff;
+  }
+  p {
+    margin-top: 5px;
+    font-family: "Inter";
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+    text-align: left;
+    /* or 214% */
+
+    color: #4f5665;
+  }
+
+  a {
+    display: flex;
+    margin-top: -20px;
+    float: right;
+    img {
+      margin-top: 5px;
+      margin-right: 5px;
+      width: 17px;
+      height: 17px;
+    }
+  }
+`;
+const Line = styled.div`
+  border-top-style: solid;
+  border-top-width: 2px;
+  width: 106%;
+  border-top-color: #c9ccd6;
+`;
+const Summarizes = styled.div`
+  padding: 3px;
+  height: 223px;
+  width: 105%;
+  margin-top: 20px;
+  overflow-y: auto;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none;
+  ::-webkit-scrollbar {
+    display: none;
+  }
+  button {
+    &:hover {
+      background-color: #eef0f4;
+    }
+    padding: 15px;
+    width: 100%;
+    background-color: #ffffff;
+    border: none;
+  }
+  div {
+    p {
+      font-family: "Inter";
+      font-style: normal;
+      font-weight: 500;
+      font-size: 20px;
+      line-height: 23px;
+      /* identical to box height, or 250% */
+      text-align: left;
+      color: #9183af;
+      margin-bottom: 13px;
+    }
+  }
+
+  h5 {
+    float: right;
+    font-family: "Inter";
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 28px;
+    /* identical to box height, or 200% */
+
+    letter-spacing: -0.3px;
+
+    color: #5c0fff;
+  }
+  p {
+    margin-top: 5px;
+    font-family: "Inter";
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+    text-align: left;
+    /* or 214% */
+
+    color: #4f5665;
+  }
+  img {
+    width: 17px;
+    float: right;
+  }
+`;
 export default function Index(props) {
   //검색창 온오프
   const [on, setOn] = useState(false);
@@ -250,24 +420,24 @@ export default function Index(props) {
     ));
   };
   const Summarize = () => {
-    return Summarize.indexes.map((i) => (
+    return SummarizeIndex.indexes.map((i) => (
       <>
+        <Line />
         <button
           onClick={(e) => {
-            props.onTime(time2sec(i.start.substring), e);
+            props.onTime(time2sec(i.start), e);
           }}
         >
           <div>
-            <img src={BookmarkIcon} />
-            <h5>{i.start.substring}</h5>
+            <h5>{i.start}</h5>
+
+            <p>{i.index}</p>
           </div>
-          <p>{i.index}</p>
-          {/* 특정문자열만 색 바꾸는 코드: 줄이 바뀌어버림 */}
-          {/* <p>{i.subtitle.substring(0, i.subtitle.indexOf(search))}</p>
-            <p>{search}</p>
-            <p>
-              {i.subtitle.substring(i.subtitle.indexOf(search) + search.length)}
-            </p> */}
+          <span>
+            <img src={HeartIcon} />
+
+            <p>{i.subtitle}</p>
+          </span>
         </button>
       </>
     ));
@@ -302,6 +472,7 @@ export default function Index(props) {
         ) : (
           <Summarizes>
             <Summarize />
+            <Line />
           </Summarizes>
         )}
       </div>
@@ -311,15 +482,73 @@ export default function Index(props) {
           <h2>Clip List</h2>
         </div>
         <button>
-          <p>
-            Prince Harry's autobiography 'Spare'
-            <br />
-            (Sneak Peak)
-          </p>
+          <p>Prince Harry's autobiography 'Spare' (Sneak Peak)</p>
           <img src={PlayIcon} />
           <label>14:19</label>
         </button>
       </ClipList>
+      <Most>
+        <span>
+          <div>
+            <h2>Most Seen</h2>
+          </div>
+          <img src={FilledPlayIcon} />
+        </span>
+        <Line />
+        <button
+          onClick={(e) => {
+            props.onTime(time2sec("00:06:00"), e);
+          }}
+        >
+          <div>
+            <h5>00:06:00</h5>
+
+            <p>Beware the spare</p>
+          </div>
+          <section>
+            <p>
+              Now, this is an article from The Guardian, a British newspaper, a
+              British broadsheet specifically.
+            </p>
+            <a>
+              <img src={FilledPlayIcon} />
+              <h5>885</h5>
+            </a>
+          </section>
+        </button>
+        <Line />
+      </Most>
+      <Most>
+        <span>
+          <div>
+            <h2>Most Scraped</h2>
+          </div>
+          <img src={FilledHeartIcon} />
+        </span>
+        <Line />
+        <button
+          onClick={(e) => {
+            props.onTime(time2sec("00:06:00"), e);
+          }}
+        >
+          <div>
+            <h5>00:06:00</h5>
+
+            <p>Beware the spare</p>
+          </div>
+          <section>
+            <p>
+              Now, this is an article from The Guardian, a British newspaper, a
+              British broadsheet specifically.
+            </p>
+            <a>
+              <img src={FilledHeartIcon} />
+              <h5>885</h5>
+            </a>
+          </section>
+        </button>
+        <Line />
+      </Most>
     </>
   );
 }
