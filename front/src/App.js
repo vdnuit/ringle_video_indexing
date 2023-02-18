@@ -4,9 +4,131 @@ import ReactPlayer from "react-player";
 import { useState, useRef, useCallback, useEffect } from "react";
 import { wait } from "@testing-library/user-event/dist/utils";
 import Subtitle from "./assets/subtitle.json";
+import HeaderImg from "./assets/Group 25.png";
+import TutorImg from "./assets/TutorImg.png";
+import SearchIcon from "./assets/SearchIcon.png";
+import BookmarkIcon from "./assets/BookmarkIcon.png";
+import styled from "styled-components";
 
+const Container = styled.div`
+  display: flex;
+`;
+const LS = styled.div`
+  width: 60%;
+  margin-top: 4%;
+  margin-left: 15%;
+  h1 {
+    margin-top: 30px;
+    font-family: "Inter";
+    font-size: 20px;
+    line-height: 30px;
+    font-weight: 700;
+  }
+`;
+const RS = styled.div`
+  margin: 4%;
+
+  margin-right: 15%;
+  width: 50%;
+`;
+const Search = styled.div`
+  display: flex;
+  input {
+    width: 100%;
+    height: 39px;
+    background: #f4f4f4;
+    border: 1px solid #c9c9c9;
+    border-radius: 6px;
+    font-family: "Inter";
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 28px;
+    /* identical to box height, or 175% */
+
+    letter-spacing: -0.3px;
+    padding-left: 25px;
+    color: #818892;
+  }
+  img {
+    z-index: 10;
+    width: 20px;
+    height: 20px;
+    margin-left: -42px;
+    margin-top: 10px;
+  }
+`;
+
+const Profile = styled.div`
+  margin-top: 20px;
+  margin-bottom: 30px;
+  display: flex;
+  height: 40px;
+  font-family: "Inter";
+
+  h4 {
+    margin-left: 20px;
+    font-size: 16px;
+    line-height: 24px;
+  }
+  p {
+    margin-left: 20px;
+
+    --tw-text-opacity: 1;
+    color: rgb(134 154 184 / var(--tw-text-opacity));
+    font-size: 14px;
+    line-height: 21px;
+  }
+`;
+
+const Answers = styled.div`
+  padding: 3px;
+  margin-left: -3px;
+  height: 230px;
+  width: 106%;
+  margin-top: 13px;
+  overflow-y: auto;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none;
+  ::-webkit-scrollbar {
+    display: none;
+  }
+  button {
+    margin-top: 15px;
+    border: none;
+    background: #f4f1f1;
+    width: 100%;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 8px;
+    div {
+      diaplay: flex;
+      justify-content: space-between;
+      flex-direction: row;
+      img {
+        margin: 10px;
+        float: right;
+        width: 14px;
+        height: 18px;
+      }
+      h5 {
+        margin-top: 8px;
+        margin-left: -10px;
+        width: 100px;
+        font-family: "Inter";
+        font-style: normal;
+        font-weight: 500;
+        font-size: 14px;
+        line-height: 28px;
+        /* identical to box height, or 200% */
+
+        letter-spacing: -0.3px;
+
+        color: #6e3ed3;
+      }
+    }
+  }
+`;
 function Index(props) {
-
   //검색창 처리
   const [search, setSearch] = useState("");
 
@@ -48,7 +170,7 @@ function Index(props) {
   //검색어 배열 출력
   const Answer = (e) => {
     if (e.input === undefined) {
-      return <p>검색어를 입력해주세요.</p>;
+      return <p>Search</p>;
     }
     // console.log(e.input);
     return e.input.map((i) => (
@@ -58,8 +180,17 @@ function Index(props) {
             props.onTime(time2sec(i.start.substring(0, 8)), e);
           }}
         >
+          <div>
+            <img src={BookmarkIcon} />
+            <h5>{i.start.substring(0, 8)}</h5>
+          </div>
           <p>{i.subtitle}</p>
-          <p>{i.start.substring(0, 8)}</p>
+          {/* 특정문자열만 색 바꾸는 코드: 줄이 바뀌어버림 */}
+          {/* <p>{i.subtitle.substring(0, i.subtitle.indexOf(search))}</p>
+          <p>{search}</p>
+          <p>
+            {i.subtitle.substring(i.subtitle.indexOf(search) + search.length)}
+          </p> */}
         </button>
       </>
     ));
@@ -70,12 +201,13 @@ function Index(props) {
       {/* 검색창 구역 */}
       <div>
         {/* 검색창 */}
-        <input
-          onChange={onSearch}
-          value={search}
-          placeholder="검색할 단어를 입력하세요"
-        />
-        <Answer input={answers} />
+        <Search>
+          <input onChange={onSearch} value={search} placeholder="Search" />
+          <img src={SearchIcon} />
+        </Search>
+        <Answers class="answers">
+          <Answer input={answers} />
+        </Answers>
       </div>
       {/* 클립 구역 */}
       <div>
@@ -105,7 +237,7 @@ export default function App() {
     "https://ringlecontents.s3.ap-northeast-2.amazonaws.com/webinar/caption/628/1.vtt";
 
   //자막 넣기 위한 코드
-  const [trackLang, setTrackLang] = useState();
+  const [trackLang, setTrackLang] = useState("en");
 
   useEffect(() => {
     const textTracks = player.current.getInternalPlayer()?.textTracks;
@@ -139,93 +271,80 @@ export default function App() {
   };
 
   return (
-    <div className="App">
+    <>
       {/* 헤더 */}
-      <h1>링글 해커톤 영상 인덱싱 데모</h1>
-      {/* 동영상 */}
-      <ReactPlayer
-        ref={player}
-        url={playList[playIndex].url + `#t=${time}`}
-        controls
-        muted
-        progressInterval={1000}
-        pip={true}
-        config={{
-          file: {
-            attributes: {
-              crossOrigin: "anonymous",
-            },
-            tracks: [
-              {
-                kind: "subtitles",
-                src: SUBTITLE,
-                srcLang: "en",
-                default: false,
-                mode: trackLang === "en" ? "showing" : "hidden",
+      <img src={HeaderImg} style={{ width: "100%" }} />
+      <Container>
+        <LS>
+          {/* 동영상 */}
+          <ReactPlayer
+            ref={player}
+            url={playList[playIndex].url + `#t=${time}`}
+            controls
+            muted
+            progressInterval={1000}
+            pip={true}
+            config={{
+              file: {
+                attributes: {
+                  crossOrigin: "anonymous",
+                },
+                tracks: [
+                  {
+                    kind: "subtitles",
+                    src: SUBTITLE,
+                    srcLang: "en",
+                    default: false,
+                    mode: trackLang === "en" ? "showing" : "hidden",
+                  },
+                ],
               },
-            ],
-          },
-        }}
-        playing={playing}
-        loop
-      />
-      {trackLang}
+            }}
+            playing={playing}
+            loop
+          />
 
-      {/* 우측 리스트 */}
-      <Index onTime={onTime} />
-      {/* 하단 텍스트 */}
-      <h1>🔁2월 영자 신문 읽기반 미리보기: 해리 왕자의 자서전 'Spare'</h1>
-      <div>
-        <img
-          src="https://d38emex6h5e12i.cloudfront.net/avatar/93235ffca940a2234653b2d31b4acd564fdd0c878d2e08fe6e2a3f7ef3c6a5d5_e0151cc118c8.jpg"
-          style={{ width: "50px" }}
-          alt="Moorea"
-        />
-        <div>
-          <p>Moorea</p>
-          <p>University of Cambridge</p>
-        </div>
-      </div>
-      <h3>개요</h3>
-      <p>
-        2/8 (수)에 진행된 ‘영자 신문 읽기반’ 첫 수업의 맛보기 영상을
-        시청해보세요!
-        <br />
-        “2월 영자 신문 읽기반” 모집은 마감되었습니다. <br />
-        3월에는 영어 원서 읽기, 4월에는 영자 신문 읽기로 돌아올 예정이오니 많은
-        관심 부탁드립니다.
-        <br />
-        📰 Read with Me: Articles
-        <br />
-        2023년 2월, 지금 가장 핫한 영국/미국 기사 함께 읽어요.
-        <br />
-        2월 Read with Me에서는 총 4주 간 미국과 영국의 주요 트렌드를 알 수 있는
-        최신 기사 4편을 원어민 튜터와 읽고 주제와 관련된 고급 영어 표현과
-        배경지식을 같이 소화해봅니다.
-        <br />
-        *각 LIVE 강의에서 다룰 기사와 학습 자료는 프로그램 신청자 분들에 한해서
-        제공드리며, 강의 입장 링크 또한 각 세션 전 별도로 전달됩니다.
-        <br />
-        *총 4주간 이어지는 하나의 프로그램입니다. 개별 LIVE 세션 구매는
-        불가하오니 참고 부탁드립니다. <br />
-        링글 Pick! 2월 읽어볼 주제와 튜터 라인업
-        <br />
-      </p>
+          {/* 하단 텍스트 */}
+          <h1>🔁2월 영자 신문 읽기반 미리보기: 해리 왕자의 자서전 'Spare'</h1>
+          <Profile>
+            <img src={TutorImg} style={{ width: "40px" }} alt="Moorea" />
+            <div>
+              <h4>Moorea</h4>
+              <p>University of Cambridge</p>
+            </div>
+          </Profile>
+          <h3>개요</h3>
+          <p>
+            2/8 (수)에 진행된 ‘영자 신문 읽기반’ 첫 수업의 맛보기 영상을
+            시청해보세요!
+            <br />
+            “2월 영자 신문 읽기반” 모집은 마감되었습니다. <br />
+            3월에는 영어 원서 읽기, 4월에는 영자 신문 읽기로 돌아올 예정이오니
+            많은 관심 부탁드립니다.
+            <br />
+            📰 Read with Me: Articles
+            <br />
+            2023년 2월, 지금 가장 핫한 영국/미국 기사 함께 읽어요.
+            <br />
+            2월 Read with Me에서는 총 4주 간 미국과 영국의 주요 트렌드를 알 수
+            있는 최신 기사 4편을 원어민 튜터와 읽고 주제와 관련된 고급 영어
+            표현과 배경지식을 같이 소화해봅니다.
+            <br />
+            *각 LIVE 강의에서 다룰 기사와 학습 자료는 프로그램 신청자 분들에
+            한해서 제공드리며, 강의 입장 링크 또한 각 세션 전 별도로 전달됩니다.
+            <br />
+            *총 4주간 이어지는 하나의 프로그램입니다. 개별 LIVE 세션 구매는
+            불가하오니 참고 부탁드립니다. <br />
+            링글 Pick! 2월 읽어볼 주제와 튜터 라인업
+            <br />
+          </p>
+        </LS>
 
-      {/* 임시버튼들 */}
-      <button onClick={() => setTrackLang("en")}>자막 키기</button>
-      <button onClick={() => setTrackLang()}>자막 끄기</button>
-
-      <button onClick={() => setPlaying(!playing)}>
-        {playing ? "정지" : "재생"}
-      </button>
-      <button
-        onClick={(e) => {
-          onTime(30, e);
-        }}
-      >
-        30
-      </button>
-    </div>
+        {/* 우측 리스트 */}
+        <RS>
+          <Index onTime={onTime} />
+        </RS>
+      </Container>
+    </>
   );
 }

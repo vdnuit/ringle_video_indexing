@@ -5,14 +5,22 @@ import reset from "styled-reset";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
+import InterTTF from "./assets/Inter.ttf";
 
 const GlobalStyle = createGlobalStyle`
 ${reset}
+margin: 0 auto;
+@font-face {
+  font-family: 'Inter';
+  src: local('Inter'), local('Inter');
+  font-style: normal;
+  src: url(${InterTTF}) format('truetype');
+}
  `;
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    {/* <GlobalStyle /> */}
+    <GlobalStyle />
     <App />
   </React.StrictMode>
 );
