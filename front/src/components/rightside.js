@@ -424,30 +424,57 @@ export default function Index(props) {
   };
   const Summarize = () => {
     const [prompt, setPrompt] = useState("");
+    const [alist, setAlist] = useState([]);
     const [response, setResponse] = useState("");
-
-    var list = [];
-    useEffect(() => {
-      for (var i = 0; i < 1; i++) {
-        setPrompt(
-          `Can you summarize "${Text.subtitles[i].subtitle}" in a phrase?`
-        );
-        console.log(
-          `Can you summarize "${Text.subtitles[i].subtitle}" in 10 words?`
-        );
-        list.push(response);
-        handleSubmit();
+    const [list, setList] = useState([]);
+    const getAnswer = (i, num) => {
+      if (i.length < 1) {
+        return 0;
       }
-      console.log(list);
+      axios
+        .post("http://localhost:8080/chat", {
+          prompt: i,
+        })
+        .then((res) => {
+          var a = res.data;
+          if (a.length <= 1) {
+            return 0;
+          }
+          setList((prevList) => {
+            const newList = [...prevList];
+            newList[num] = res.data;
+            return newList;
+          });
+          console.log(list);
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    };
+    useEffect(() => {
+      if (list.length === 15) {
+        setTimeout(() => {
+          setAlist(list);
+        }, 100);
+      }
+    }, [list]);
+    useEffect(() => {
+      Text.subtitles.forEach((subtitle) => {
+        getAnswer(
+          `Can you summarize "${subtitle.subtitle}" in a phrase?`,
+          subtitle.number - 1
+        );
+      });
     }, []);
-    console.log(response);
-    const handleSubmit = () => {
+    const handleSubmit = (e) => {
+      e.preventDefault();
       // Send a request to the server with the prompt
       axios
         .post("http://localhost:8080/chat", { prompt })
         .then((res) => {
           // Update the response state with the server's response
           setResponse(res.data);
+          console.log({ prompt });
         })
         .catch((err) => {
           console.error(err);
@@ -463,8 +490,7 @@ export default function Index(props) {
         >
           <div>
             <h5>{i.start}</h5>
-
-            <p>{i.index}</p>
+            <p>{alist[i.number]}</p>
           </div>
           <span>
             <img src={HeartIcon} />
@@ -472,8 +498,6 @@ export default function Index(props) {
             <p>{i.subtitle}</p>
           </span>
         </button>
-
-        <p>{response}</p>
       </>
     ));
   };
