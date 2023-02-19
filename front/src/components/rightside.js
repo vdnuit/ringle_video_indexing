@@ -356,6 +356,7 @@ const Summarizes = styled.div`
 export default function Index(props) {
   //검색창 온오프
   const [on, setOn] = useState(false);
+  const [list, setList] = useState([]);
 
   //검색창 처리
   const [search, setSearch] = useState("");
@@ -363,6 +364,39 @@ export default function Index(props) {
   useEffect(() => {
     searchSub(search);
   }, [search]);
+
+  useEffect(() => {
+    Text.subtitles.forEach((subtitle) => {
+      getAnswer(
+        `Can you summarize "${subtitle.subtitle}" in a phrase?`,
+        subtitle.number - 1
+      );
+    });
+  }, []);
+  const getAnswer = (i, num) => {
+    if (i.length < 1) {
+      return 0;
+    }
+    axios
+      .post("http://localhost:8080/chat", {
+        prompt: i,
+      })
+      .then((res) => {
+        var a = res.data;
+        if (a.length <= 1) {
+          return 0;
+        }
+        setList((prevList) => {
+          const newList = [...prevList];
+          newList[num] = res.data;
+          return newList;
+        });
+        console.log(list);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
   const onSearch = (e) => {
     setSearch(e.target.value);
   };
@@ -426,31 +460,7 @@ export default function Index(props) {
     const [prompt, setPrompt] = useState("");
     const [alist, setAlist] = useState([]);
     const [response, setResponse] = useState("");
-    const [list, setList] = useState([]);
-    const getAnswer = (i, num) => {
-      if (i.length < 1) {
-        return 0;
-      }
-      axios
-        .post("http://localhost:8080/chat", {
-          prompt: i,
-        })
-        .then((res) => {
-          var a = res.data;
-          if (a.length <= 1) {
-            return 0;
-          }
-          setList((prevList) => {
-            const newList = [...prevList];
-            newList[num] = res.data;
-            return newList;
-          });
-          console.log(list);
-        })
-        .catch((err) => {
-          console.error(err);
-        });
-    };
+
     useEffect(() => {
       if (list.length === 15) {
         setTimeout(() => {
@@ -458,14 +468,7 @@ export default function Index(props) {
         }, 100);
       }
     }, [list]);
-    useEffect(() => {
-      Text.subtitles.forEach((subtitle) => {
-        getAnswer(
-          `Can you summarize "${subtitle.subtitle}" in a phrase?`,
-          subtitle.number - 1
-        );
-      });
-    }, []);
+
     const handleSubmit = (e) => {
       e.preventDefault();
       // Send a request to the server with the prompt
@@ -556,19 +559,16 @@ export default function Index(props) {
         <Line />
         <button
           onClick={(e) => {
-            props.onTime(time2sec("00:06:00"), e);
+            props.onTime(time2sec("00:02:49"), e);
           }}
         >
           <div>
-            <h5>00:06:00</h5>
+            <h5>00:02:49</h5>
 
-            <p>Beware the spare</p>
+            <p>Prince Harry as a 'spare'</p>
           </div>
           <section>
-            <p>
-              Now, this is an article from The Guardian, a British newspaper, a
-              British broadsheet specifically.
-            </p>
+            <p>Now what about Prince Harry more specifically?</p>
             <a>
               <img src={FilledPlayIcon} />
               <h5>885</h5>
